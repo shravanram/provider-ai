@@ -1,0 +1,9 @@
+{
+    "trunk": {
+      "name": "My outbound trunk",
+      "address": "livekit-twilio-outbound.pstn.twilio.com",
+      "numbers": ["+18448610695"],
+      "auth_username": "livekit",
+      "auth_password": "Livekittwilio1"
+    }
+  }

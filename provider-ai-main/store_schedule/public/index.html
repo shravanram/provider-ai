@@ -1,0 +1,196 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Doctor Schedule Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    form {
+      max-width: 600px;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 6px;
+      background: #fafafa;
+    }
+    label {
+      display: inline-block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, textarea, select, button {
+      display: block;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      padding: 8px;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    .timeSlot {
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      background: #fff;
+    }
+    .timeSlot label {
+      margin-top: 0; 
+    }
+    .inline {
+      display: inline-block;
+      width: 30%;
+      vertical-align: top;
+      margin-right: 5%;
+    }
+    #addTimeSlot {
+      background-color: #fff;
+      color: #333;
+      border: 1px solid #333;
+      cursor: pointer;
+      width: auto;
+    }
+    #addTimeSlot:hover {
+      background-color: #333;
+      color: #fff;
+    }
+    button[type="submit"] {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      width: auto;
+    }
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+    button[type="reset"] {
+      background-color: #6c757d;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      width: auto;
+      margin-right: 10px;
+    }
+    button[type="reset"]:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Doctor Schedule Manager</h1>
+  <form id="scheduleForm">
+    <label for="doctorName">Doctor Name *</label>
+    <input type="text" id="doctorName" name="doctorName" placeholder="e.g., Dr. John Smith" required />
+
+    <label for="specialty">Specialty</label>
+    <input type="text" id="specialty" name="specialty" placeholder="e.g., Cardiology" />
+
+    <label>Available Time Slots *</label>
+    <div id="timeSlots">
+      <!-- Time Slot #1 by default -->
+      <div class="timeSlot">
+        <div class="inline">
+          <label>Date</label>
+          <input type="date" class="slotDate" required />
+        </div>
+        <div class="inline">
+          <label>Start Time</label>
+          <input type="time" class="slotStart" required />
+        </div>
+        <div class="inline">
+          <label>End Time</label>
+          <input type="time" class="slotEnd" required />
+        </div>
+      </div>
+    </div>
+    <button type="button" id="addTimeSlot">+ Add Another Time Slot</button>
+
+    <label for="notes">Additional Notes</label>
+    <textarea id="notes" name="notes" placeholder="Any additional information..."></textarea>
+
+    <div>
+      <button type="reset">Reset</button>
+      <button type="submit">Save Schedule</button>
+    </div>
+  </form>
+
+  <script>
+    const addTimeSlotBtn = document.getElementById('addTimeSlot');
+    const timeSlotsContainer = document.getElementById('timeSlots');
+    const scheduleForm = document.getElementById('scheduleForm');
+
+    // 1. Add new time slot on button click
+    addTimeSlotBtn.addEventListener('click', () => {
+      const newSlot = document.createElement('div');
+      newSlot.classList.add('timeSlot');
+      newSlot.innerHTML = `
+        <div class="inline">
+          <label>Date</label>
+          <input type="date" class="slotDate" required />
+        </div>
+        <div class="inline">
+          <label>Start Time</label>
+          <input type="time" class="slotStart" required />
+        </div>
+        <div class="inline">
+          <label>End Time</label>
+          <input type="time" class="slotEnd" required />
+        </div>
+      `;
+      timeSlotsContainer.appendChild(newSlot);
+    });
+
+    // 2. Handle form submission
+    scheduleForm.addEventListener('submit', (event) => {
+      event.preventDefault(); // stop page reload
+
+      // Gather basic fields
+      const doctorName = document.getElementById('doctorName').value;
+      const specialty = document.getElementById('specialty').value;
+      const notes = document.getElementById('notes').value;
+
+      // Gather time slots
+      const slotDivs = document.querySelectorAll('.timeSlot');
+      const timeSlots = [];
+      slotDivs.forEach(slot => {
+        const date = slot.querySelector('.slotDate').value;
+        const startTime = slot.querySelector('.slotStart').value;
+        const endTime = slot.querySelector('.slotEnd').value;
+        timeSlots.push({ date, startTime, endTime });
+      });
+
+      // Create one JSON object
+      const scheduleData = {
+        doctorName: doctorName,
+        specialty: specialty,
+        timeSlots: timeSlots,
+        notes: notes
+      };
+
+      // 3. Send to our Flask backend at /api/schedule
+      fetch('/api/schedule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(scheduleData),
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message || 'Schedule saved!');
+        // Optionally, reset the form or do something else
+        // scheduleForm.reset();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('There was a problem saving the schedule.');
+      });
+    });
+  </script>
+</body>
+</html>

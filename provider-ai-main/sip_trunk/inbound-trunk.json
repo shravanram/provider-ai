@@ -1,0 +1,6 @@
+{
+"trunk": {
+    "name": "My Twilio trunk",
+    "numbers":  ["+18448610695"]
+} 
+}

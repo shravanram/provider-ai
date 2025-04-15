@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "demo-call"
+version = "0.1.0"
+description = ""
+authors = ["Mohan-Shravan_bcgprod <mohan.shravan@bcg.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+livekit = ">=0.19.1"
+livekit-agents = ">=0.12.11"
+livekit-plugins-openai = ">=0.10.17"
+python-dotenv = ">=1.0,<2.0"
+smtp2go = "^2.3.1"
+livekit-plugins-silero = "^0.7.4"
+langgraph = "^0.2.74"
+langchain-openai = "^0.3.6"
+livekit-plugins-deepgram = "^0.7.0"
+flask = "^3.1.0"
+flask-sqlalchemy = "^3.1.1"
+psycopg2-binary = "^2.9.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
