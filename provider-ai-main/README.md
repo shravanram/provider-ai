@@ -1,4 +1,12 @@
-# Provider-AI Setup Guide
+# Provider-AI
+
+This application intends to solve the following key pain points:
+1. Patient scheduling system
+2. Nurses understanding if the patient is pre-authorized for a procedure
+
+
+Key tech used: LangGraph, LiveKit
+
 
 ## Installation
 
