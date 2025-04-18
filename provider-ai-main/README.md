@@ -3,6 +3,8 @@
 This application intends to solve the following key pain points:
 1. Patient scheduling system
 2. Nurses understanding if the patient is pre-authorized for a procedure
+![image (4)](https://github.com/user-attachments/assets/fcdea7f7-70b7-4c64-ad88-683516bf8506)
+
 
 
 Key tech used: LangGraph, LiveKit
